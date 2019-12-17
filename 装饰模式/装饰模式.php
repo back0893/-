@@ -18,11 +18,17 @@
         $this->value=$value;
     }
      public function html():string{
-        return sprintf("<input type='input' name='%s' value='%s'/>",$this->name,$this->value);
+        return sprintf("<input type='text' name='%s' value='%s'/>",$this->name,$this->value);
      }
  }
 
+/**
+ * Class WidgetDecorator
+ */
 abstract class WidgetDecorator implements Widget{
+    /**
+     * @var Widget $widget
+     */
     protected $widget;
     function setWidget(Widget $widget)
     {
@@ -41,13 +47,28 @@ class Labeled extends WidgetDecorator{
         return sprintf("<b>%s</b>%s",$this->label,$this->widget->html());
     }
 }
+
+class Invalid extends WidgetDecorator{
+    public function __construct(Widget $widget)
+    {
+        $this->widget=$widget;
+    }
+
+    public function html(): string
+    {
+        return sprintf("<span style='color:red' class='invalid'>%s</span>",$this->widget->html());
+    }
+}
 ?>
+
 <html>
 <body>
 <form>
 <?php 
     $label=new Labeled("test",new TextInput("name",'测试'));
+    $invalid=new Invalid($label);
     echo $label->html();
+    echo $invalid->html();
 ?>
 </form>
 </body>
