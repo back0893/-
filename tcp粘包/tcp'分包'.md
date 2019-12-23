@@ -19,10 +19,14 @@ interface IProtocol interface{
 对于不同的实现,只要实现对应的数据协议就能获得数据,从而进行后续处理.
 下面我实现了一个简单的php实现的tcp服务器,并且使用了协议分包
 固定的头长度+数据 4个字节的数据长度+数据
-```
-|数据长度n|payload|
+
+---
+| 数据长度n | payload |
+|:---:|:---:|
 |4字节|n字节|
-```
+---
+
+
 
 ```php
 class Protocol implements IProtocol
