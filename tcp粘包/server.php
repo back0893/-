@@ -50,6 +50,9 @@ class TcpConnection
     protected $need_len;
     protected $protocol;
 
+    public function getId(){
+        return (int)$this->con;
+    }
     public function __construct($con)
     {
         $this->con = $con;
@@ -80,6 +83,7 @@ class TcpConnection
 
     public function write($data)
     {
+        $a=$this->protocol->pack($data);
         fwrite($this->con, $this->protocol->pack($data));
     }
 
@@ -92,7 +96,7 @@ class TcpConnection
 
 function ping($raw, TcpConnection $conn)
 {
-    printf("接口数据的长度为:%d,具体的值为:%s", $raw['len'], $raw['body']);
+    printf("连接:%d,接口数据的长度为:%d,具体的值为:%s\n", $conn->getId(),$raw['len'], $raw['body']);
     $conn->write($raw);
 }
 
